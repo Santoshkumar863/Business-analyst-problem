@@ -1,0 +1,133 @@
+# TASK 5
+## BUSINESS ANALYSIS ON SUPERSTORE
+### THE DATASET CONTAINING FOLLOWING PARAMETERS
+### Ship Mode 
+### Segment
+### Country
+### City	
+### State	
+### Postal Code
+### Region	
+### Sub-Category
+### Sales
+### Quantity
+### Discount
+### Profit
+
+
+#import libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib import pyplot
+from random import seed
+from random import randint
+
+data=pd.read_csv('SampleSuperstore.csv')
+data
+data.head()
+
+data.shape
+
+Exploratory Data Analysis
+sns.pairplot(data)
+
+data.hist(bins=50,figsize=(50,50),color='blue')
+
+data.isnull().sum()
+data.info()
+data.describe()
+
+data['State'].value_counts()
+
+# creating bar chart for visualization
+### x = names of categories
+### y=quantities
+
+x = ['Profit', 'Sales', 'Discouts'] # names for categories
+y = [randint(0, 100), randint(0, 100), randint(0, 100)]  # quantities for each category
+pyplot.bar(x, y)  # create bar chart
+pyplot.show()
+
+x = [ x for x in range(100)]
+y = [randint(0,1000) for _ in range(100)]
+pyplot.subplot(2,1,1)
+pyplot.plot(y)  ; # for single time series.
+pyplot.subplot(2,1,2)
+pyplot.scatter(x,y); 
+
+#calculate the correlation of dataset
+corr=data.corr()
+corr.style.background_gradient(cmap="inferno")
+
+#using HEATMAP to calculate the correlation of dataset
+
+plt.figure(figsize=(15,15))
+sns.heatmap(data.corr(),annot=True,cmap='inferno',mask=np.triu(data.corr(),k=1))
+
+# Bar plot to explore the profit and regions
+data.groupby(data['Region'])['Profit'].mean().plot.bar()
+
+# scatter plot to explore the profit and regions
+data.plot(kind='scatter',x='Profit',y='Region',color='r',alpha=0.2,title='Scatter plot between profit and region')
+
+#percentage of deals in Regions in USA
+figure=plt.figure(figsize=(50,15))
+explode =(0,0.1,0,0.1,0) 
+plt.pie(data['Region'].value_counts(),labels=data['Region'].value_counts().index, autopct='%.1f%%')
+plt.title('percentage of deals in Regions in USA')
+plt.legend( loc = 'upper right') 
+plt.show()
+
+#NO . of states  stores uses in usa
+figure=plt.figure(figsize=(50,10)) 
+plt.pie(data['State'].value_counts(),labels=data['State'].value_counts().index, autopct='%.1f%%')
+plt.title('no.of states in USA')
+plt.legend( loc = 'upper right') 
+plt.show()
+
+#using bargraph value counts of State
+data['State'].value_counts().plot(kind='bar',figsize=(20,20),color='blue')
+
+# pie chart to plot the percentage of the states
+figure=plt.figure(figsize=(50,20))
+explode =(0,0.1,0,0.1,0) 
+plt.pie(data['State'].value_counts(),labels=data['State'].value_counts().index, autopct='%.1f%%')
+plt.title('percentage of deals in States in USA')
+plt.legend( loc = 'upper right') 
+plt.show()
+
+#using pie to explore the city
+figure=plt.figure(figsize=(50,20))
+explode =(0,0.1,0,0.1,0) 
+plt.pie(data['City'].value_counts(),labels=data['City'].value_counts().index, autopct='%.1f%%')
+plt.title('percentage  deals of Cities in USA')
+plt.show()
+
+#using bargraph  plotting sub-category 
+data['Sub-Category'].value_counts().plot(kind='bar',figsize=(20,20),color='red')
+
+# checking profits and losses Between the State and Discount
+pd.DataFrame(data.groupby('State').sum())['Discount'].sort_values(ascending= True)
+
+# checking profits and losses Between the State and Profit
+pd.DataFrame(data.groupby('State').sum())['Profit'].sort_values(ascending= True)
+
+# Find out the weak areas where we can work
+## to make more profit.
+## States to make profit
+### Texas                 
+### Ohio                 
+### Pennsylvania           
+### Illinois               
+### North Carolina          
+### Colorado                
+### Tennessee               
+### Arizona                 
+### Florida                
+### Oregon                 
+
+
+# THANK YOU
+
